@@ -1,11 +1,11 @@
 BandiJ - Relational algebra for Java
 
-BandiJ is the data transformation engine for Java programming language based on
-the relational model. Exactly the same approach is used by relational databases,
-though due to the high complexity of the most RDBMS it widely adopted, and also
-it is very frequently misinterpreted. This project is an attempt to bring the
-key ideas used in the relational databases into the Java world, yet keeping it
-as simple & fast as possible.
+BandiJ is the data transformation engine for Java programming language based
+on the relational model. Exactly the same approach is utilised by relational
+databases to provide the data independence (an ability to keep your data
+separate from the way you use it). This project is an attempt to bring the
+key ideas used in the relational databases into the Java world, keeping it as
+simple as possible.
 
 Note that this engine works solely within the JVM and does not require any
 libraries apart from the standard JSE runtime.
