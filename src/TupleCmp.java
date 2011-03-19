@@ -18,16 +18,16 @@ package org.bandilab;
 import java.util.*;
 
 final class TupleCmp implements Comparator<Tuple> {
-    private final int[] idx;
+    private final int[] index;
 
-    TupleCmp(int[] idx) {
-        this.idx = idx;
+    TupleCmp(int[] index) {
+        this.index = index;
     }
 
     public int compare(Tuple l, Tuple r) {
         int result = 0;
-        for (int i = 0; i < idx.length; ++i) {
-            int pos = idx[i];
+
+        for (int pos : index) {
             result = l.attrs[pos].compareTo(r.attrs[pos]);
             if (result != 0)
                 break;
