@@ -88,9 +88,9 @@ public final class Relation {
 
     /**
      * <code>
-     * extend(ticker, new Extension("attr") {
+     * extend(books, new Extension("newPrice") {
      *     public Tuple extend(Tuple t) {
-     *         t.extend("newPrice", 0.90 * t.getDouble("price"));
+     *         t.extend(0.90 * t.getDouble("price"));
      *     }
      * }
      * </code>
