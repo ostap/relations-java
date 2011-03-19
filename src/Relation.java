@@ -23,7 +23,7 @@ public final class Relation {
 
     public Relation(Attribute ... attrs) {
         this.head = new Head(attrs);
-        this.body = new TreeSet<Tuple>(new TupleCmp(this.head.getIdx()));
+        this.body = new TreeSet<Tuple>(new TupleCmp(this.head.getIndex()));
     }
 
     private Relation(Head head, Set<Tuple> body) {
@@ -65,7 +65,7 @@ public final class Relation {
 
     /** sort(ticker, "close"); */
     public static Relation sort(Relation r, String ... attrs) {
-        TupleCmp cmp = new TupleCmp(r.head.getIdx(attrs));
+        TupleCmp cmp = new TupleCmp(r.head.getIndex(attrs));
         TreeSet<Tuple> sorted = new TreeSet<Tuple>(cmp);
         sorted.addAll(r.body);
 

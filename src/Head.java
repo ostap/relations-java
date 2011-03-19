@@ -18,23 +18,30 @@ package org.bandilab;
 import java.util.*;
 
 final class Head {
-    private final Map<String, Integer> idx;
-    // private final Map<String, Type> types;
-    // enum Type { STRING, INTEGER, DOUBLE, LONG }
+    private final Map<String, Integer> index;
+    private final Map<String, Class> types;
 
     Head(Attribute attrs[]) {
-        this.idx = null;
+        this.index = new HashMap<String, Integer>();
+        this.types = new HashMap<String, Class>();
+
+        int i = 0;
+        for (Attribute a : attrs) {
+            this.index.put(a.name, i++);
+            this.types.put(a.name, a.type);
+        }
     }
 
-    public int[] getIdx(String ... attrs) {
+    int[] getIndex(String ... attrs) {
         Collection<String> x = (attrs.length == 0)
-            ? idx.keySet()
+            ? index.keySet()
             : Arrays.asList(attrs);
+
 
         int i = 0;
         int res[] = new int[x.size()];
         for (String a : x)
-            res[i++] = idx.get(a); // FIXME: what if not found?
+            res[i++] = index.get(a); // FIXME: what if not found?
 
         return res;
     }

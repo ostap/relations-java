@@ -19,15 +19,21 @@ import static org.bandilab.Relation.*;
 
 public final class RelationTest {
     public static void main(String[] args) throws Exception {
+        testSort();
+    }
+
+    static void testSort() {
         Relation r = new Relation(
-            new Attribute("greeting", String.class),
-            new Attribute("price", Integer.class),
-            new Attribute("temperatur", Double.class));
+                new Attribute("id", Integer.class),
+                new Attribute("name", String.class));
 
-        r.add("hello", 123, 12.25);
-        r.add("world", 321, 25.12);
+        r.add(111, "x");
+        r.add(11,  "y");
+        r.add(1,   "z");
 
-        System.out.println(r);
-        System.out.println(sort(r, "greeting"));
+        if (!"[[1, z], [11, y], [111, x]]".equals(r.toString()))
+            throw new AssertionError();
+        if (!"[[111, x], [11, y], [1, z]]".equals(sort(r, "name").toString()))
+            throw new AssertionError();
     }
 }

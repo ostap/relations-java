@@ -16,6 +16,11 @@ limitations under the License.
 package org.bandilab;
 
 public final class Attribute {
+    final String name;
+    final Class type;
+
     public Attribute(String name, Class type) {
+        this.name = name;
+        this.type = type;
     }
 }
