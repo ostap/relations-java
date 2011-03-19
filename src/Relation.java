@@ -21,6 +21,21 @@ public final class Relation {
     private final Head head;
     private final Set<Tuple> body;
 
+    /**
+     * Here is how to construct a new Books relation with three attributes
+     * (title, pages, and price):
+     *
+     * <code>
+     * Relation books = new Relation(
+     *         new Attribute("title", String.class),
+     *         new Attribute("pages", Integer.class),
+     *         new Attribute("price", Double.class));
+     *
+     * r.add("The Iliad", 576, 26.40);
+     * r.add("The Odyssey", 416, 19.95);
+     * r.add("Oliver Twist", 608, 12.99);
+     * </code>
+     */
     public Relation(Attribute ... attrs) {
         this.head = new Head(attrs);
         this.body = new TreeSet<Tuple>(new TupleCmp(this.head.getIndex()));
@@ -29,10 +44,6 @@ public final class Relation {
     private Relation(Head head, Set<Tuple> body) {
         this.head = head;
         this.body = body;
-    }
-
-    public static Relation join(Relation left, Relation right) {
-        return null;
     }
 
     public void add(Comparable ... tuple) {
@@ -48,22 +59,51 @@ public final class Relation {
         return body.toString();
     }
 
-    /** project(employees, "firstName", "lastName"); */
+    /**
+     * <code>
+     * project(books, "titles");
+     * </code>
+     */
     public static Relation project(Relation r, String ... attrs) {
         return null;
     }
 
-    /** summary(employees, cnt("count"), avg("average")); */
+    /**
+     * <code>
+     * join(books, selectedAuthors);
+     * </code>
+     */
+    public static Relation join(Relation left, Relation right) {
+        return null;
+    }
+
+    /**
+     * <code>
+     * summary(books, cnt("count"));
+     * </code>
+     */
     public static Relation summary(Relation r, Aggregate ... aggrs) {
         return null;
     }
 
-    /** extend(ticker, "sqDiff", pow(minus("close", "avg"), 2)); */
-    public static Relation extend(Relation r, String attr, Extension ext) {
+    /**
+     * <code>
+     * extend(ticker, new Extension("attr") {
+     *     public Tuple extend(Tuple t) {
+     *         t.extend("newPrice", 0.90 * t.getDouble("price"));
+     *     }
+     * }
+     * </code>
+     */
+    public static Relation extend(Relation r, Extension ... ext) {
         return null;
     }
 
-    /** sort(ticker, "close"); */
+    /**
+     * <code>
+     * sort(books, "price");
+     * </code>
+     */
     public static Relation sort(Relation r, String ... attrs) {
         TupleCmp cmp = new TupleCmp(r.head.getIndex(attrs));
         TreeSet<Tuple> sorted = new TreeSet<Tuple>(cmp);
