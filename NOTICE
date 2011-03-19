@@ -1,0 +1,13 @@
+BandiJ - Relational algebra for Java
+
+Copyright 2011 Ostap Cherkashin
+
+This project is an attempt to bring the key ideas used in the relational
+databases into the Java world, keeping it as simple & fast as possible.
+
+Many thanks to Cezar Lotrean, who introduced me to the code which really
+required (IMO) this approach, and for productive discussions about the
+interfaces and general principles of the system. All this have helped me
+to finally sit down and start working on it :-)
+
+- Ostap / March 19 2011 / Zurich, Switzerland
