@@ -1,0 +1,25 @@
+BandiJ - Relational algebra for Java
+
+BandiJ is the data transformation engine for Java programming language based on
+the relational model. Exactly the same approach is used by relational databases,
+though due to the high complexity of the most RDBMS it widely adopted, and also
+it is very frequently misinterpreted. This project is an attempt to bring the
+key ideas used in the relational databases into the Java world, yet keeping it
+as simple & fast as possible.
+
+Note that this engine works solely within the JVM and does not require any
+libraries apart from the standard JSE runtime.
+
+Here is all you need to know to manipulate your data:
+    * there is only one data abstraction - relation (similar to a table)
+    * there are several relational operators, e.g. select, join, etc.
+
+Have a look at the graphical illustration of these concepts from the parent
+project Bandicoot: http://bandilab.org/bandicoot-algebra.pdf.
+
+Links:
+    * http://www.seas.upenn.edu/~zives/03f/cis550/codd.pdf
+      this is a highly recommended reading, author E.F. Codd
+    * http://en.wikipedia.org/wiki/Relation_(database)
+    * http://en.wikipedia.org/wiki/Relational_algebra
+    * http://bandilab.org/bandicoot-algebra.pdf
