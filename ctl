@@ -1,24 +1,27 @@
 #!/bin/sh
 
-out=target
+DEST=target
+VERS=alpha
 
 compile()
 {
-    mkdir -p $out
-    javac -Xlint:unchecked -d $out src/*.java test/*.java
+    mkdir -p $DEST
+    javac -Xlint:unchecked -d $DEST src/*.java test/*.java
 }
 
 cmd=$1
 case $cmd in
     dist)
         compile
+        cd $DEST
+        jar cvf bandij-$VERS.jar org
         ;;
     test)
         compile
-        java -cp $out org.bandilab.RelationTest
+        java -cp $DEST org.bandilab.RelationTest
         ;;
     clean)
-        rm -rf $out
+        rm -rf $DEST
         ;;
     *)
         echo "usage: ctl <dist|clean|test>"
