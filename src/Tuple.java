@@ -26,10 +26,21 @@ public final class Tuple {
         this.vals = vals;
     }
 
-    /*
-    public double getDouble(String name){
+    public int getInt(String attr) {
+        return (Integer) vals[head.getPos(attr)];
     }
-    */
+
+    public long getLong(String attr) {
+        return (Long) vals[head.getPos(attr)];
+    }
+
+    public double getDouble(String attr) {
+        return (Double) vals[head.getPos(attr)];
+    }
+
+    public String getString(String attr) {
+        return (String) vals[head.getPos(attr)];
+    }
 
     public String toString() {
         return Arrays.asList(vals).toString();

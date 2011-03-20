@@ -37,8 +37,11 @@ public final class Relation {
      * </code>
      */
     public Relation(Attribute ... attrs) {
-        this.head = new Head(attrs);
-        this.body = new TreeSet<Tuple>(new TupleCmp(this.head.getIndex()));
+        this(new Head(attrs));
+    }
+
+    private Relation(Head head) {
+        this(head, new TreeSet<Tuple>(new TupleCmp(head.getIndex())));
     }
 
     private Relation(Head head, Set<Tuple> body) {
@@ -60,19 +63,39 @@ public final class Relation {
     }
 
     /**
+     * Select tuples according to criteria. E.g. select books where name
+     * contains word "robot":
+     *
+     * <code>
+     * Relation roboBooks =
+     *     select(books, new Criteria() {
+     *         public boolean take(Tuple t) {
+     *             return t.getString("title").contains("robot");
+     *         }});
+     * </code>
+     */
+    public static Relation select(Relation r, Criteria c) {
+        Relation res = new Relation(r.head);
+
+        for (Tuple t : r.body)
+            if (c.take(t))
+                res.body.add(t);
+
+        return res;
+    }
+
+    /**
      * Project a relation to the specified attributes. E.g. project the books
-     * relation to titles (see below) produces a unique set of book titles.
+     * relation to titles (see below) produces a unique set of book titles:
      *
      * <code>
      * Relation allTitles = project(books, "titles");
      * </code>
      */
     public static Relation project(Relation r, String ... attrs) {
-        Head h = r.head.project(attrs);
-        TupleCmp cmp = new TupleCmp(h.getIndex());
-        TreeSet<Tuple> body = new TreeSet<Tuple>(cmp);
-        int[] index = r.head.getIndex(attrs);
+        Relation res = new Relation(r.head.project(attrs));
 
+        int[] index = r.head.getIndex(attrs);
         for (Tuple t : r.body) {
             Comparable[] vals = new Comparable[attrs.length];
 
@@ -80,10 +103,10 @@ public final class Relation {
             for (int pos : index)
                 vals[i++] = t.vals[pos];
 
-            body.add(new Tuple(h, vals));
+            res.body.add(new Tuple(res.head, vals));
         }
 
-        return new Relation(h, body);
+        return res;
     }
 
     /**
@@ -118,6 +141,9 @@ public final class Relation {
     }
 
     /**
+     * Sorts a relation by given attributes (ascending). E.g. sort the books
+     * by price:
+     *
      * <code>
      * sort(books, "price");
      * </code>

@@ -42,6 +42,14 @@ final class Head {
         return new Head(h);
     }
 
+    int getPos(String attr) {
+        Integer res = index.get(attr);
+        if (res == null)
+            throw new IllegalArgumentException("unknown attribute " + attr);
+
+        return res;
+    }
+
     int[] getIndex(String ... attrs) {
         Collection<String> x = (attrs.length == 0)
             ? index.keySet()
