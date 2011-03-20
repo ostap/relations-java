@@ -42,6 +42,28 @@ final class Head {
         return new Head(h);
     }
 
+    Head extend(Extension ... ext) {
+        Attribute[] h = new Attribute[index.size() + ext.length];
+
+        int i = 0;
+        for (Map.Entry<String, Class> e : types.entrySet())
+            h[i++] = new Attribute(e.getKey(), e.getValue());
+
+        for (Extension e : ext) {
+            if (index.containsKey(e.attr))
+                throw new IllegalArgumentException(
+                        "attribute " + e.attr + " already exists");
+
+            h[i++] = new Attribute(e.attr, e.type);
+        }
+
+        return new Head(h);
+    }
+
+    int size() {
+        return index.size();
+    }
+
     int getPos(String attr) {
         Integer res = index.get(attr);
         if (res == null)

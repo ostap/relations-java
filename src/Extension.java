@@ -16,11 +16,13 @@ limitations under the License.
 package org.bandilab;
 
 public abstract class Extension {
-    private final String attr;
+    final String attr;
+    final Class type;
 
-    public Extension(String attr) {
+    public Extension(String attr, Class type) {
         this.attr = attr;
+        this.type = type;
     }
 
-    public abstract Tuple extend(Tuple t);
+    public abstract Comparable extend(Tuple t);
 }

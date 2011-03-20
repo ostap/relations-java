@@ -85,6 +85,40 @@ public final class Relation {
     }
 
     /**
+     * Extend a relation with more attributes. This operator can be used to
+     * produce general calculations on a tuple level. E.g. extend the
+     * books with the newPrice which is a 10 percent reduction of the current
+     * price:
+     *
+     * <code>
+     * Relation salePrices =
+     *     extend(books, new Extension("newPrice", Double.class) {
+     *         public Comparable extend(Tuple t) {
+     *             return 0.90 * t.getDouble("price");
+     *         }
+     *     });
+     * </code>
+     */
+    public static Relation extend(Relation r, Extension ... ext) {
+        Relation res = new Relation(r.head.extend(ext));
+
+        for (Tuple t : r.body) {
+            Comparable[] vals = new Comparable[res.head.size()];
+
+            int i = 0;
+            for (Comparable c : t.vals)
+                vals[i++] = c;
+
+            for (Extension e : ext)
+                vals[i++] = e.extend(t);
+
+            res.body.add(new Tuple(res.head, vals));
+        }
+
+        return res;
+    }
+
+    /**
      * Project a relation to the specified attributes. E.g. project the books
      * relation to titles (see below) produces a unique set of book titles:
      *
@@ -124,19 +158,6 @@ public final class Relation {
      * </code>
      */
     public static Relation summary(Relation r, Aggregate ... aggrs) {
-        return null;
-    }
-
-    /**
-     * <code>
-     * extend(books, new Extension("newPrice") {
-     *     public Tuple extend(Tuple t) {
-     *         t.extend(0.90 * t.getDouble("price"));
-     *     }
-     * }
-     * </code>
-     */
-    public static Relation extend(Relation r, Extension ... ext) {
         return null;
     }
 

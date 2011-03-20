@@ -25,6 +25,7 @@ public final class RelationTest {
         testSort();
         testProject();
         testSelect();
+        testExtend();
     }
 
     static void testSort() {
@@ -73,6 +74,23 @@ public final class RelationTest {
 
         if (!failed)
             throw new AssertionError();
+    }
+
+    static void testExtend() {
+        Relation r = xyz();
+
+        checkEq("[[1, z, 2], [11, y, 22], [111, x, 222], [1111, x, 2222]]",
+                extend(r, new Extension("twiceId", Integer.class) {
+                    public Comparable extend(Tuple t) {
+                        return 2 * t.getInt("id");
+                    }
+                }));
+        checkEq("[[1, z, z1], [11, y, y11], [111, x, x111], [1111, x, x1111]]",
+                extend(r, new Extension("nameAndId", String.class) {
+                    public Comparable extend(Tuple t) {
+                        return t.getString("name") + t.getInt("id");
+                    }
+                }));
     }
 
     static void checkEq(String expected, Relation r) {
