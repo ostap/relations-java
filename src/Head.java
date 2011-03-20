@@ -21,9 +21,9 @@ final class Head {
     private final Map<String, Integer> index;
     private final Map<String, Class> types;
 
-    Head(Attribute attrs[]) {
-        this.index = new HashMap<String, Integer>();
-        this.types = new HashMap<String, Class>();
+    Head(Attribute[] attrs) {
+        this.index = new LinkedHashMap<String, Integer>();
+        this.types = new LinkedHashMap<String, Class>();
 
         int i = 0;
         for (Attribute a : attrs) {
@@ -32,16 +32,40 @@ final class Head {
         }
     }
 
+    Head project(String ... attrs) {
+        Attribute[] h = new Attribute[attrs.length];
+
+        int i = 0;
+        for (String a : attrs)
+            h[i++] = new Attribute(a, types.get(a));
+
+        return new Head(h);
+    }
+
     int[] getIndex(String ... attrs) {
         Collection<String> x = (attrs.length == 0)
             ? index.keySet()
             : Arrays.asList(attrs);
 
-
         int i = 0;
-        int res[] = new int[x.size()];
+        int[] res = new int[x.size()];
         for (String a : x)
             res[i++] = index.get(a); // FIXME: what if not found?
+
+        return res;
+    }
+
+    int[] getSortIndex(String ... attrs) {
+        int[] res = new int[index.size()];
+
+        Map<String, Integer> idx = new LinkedHashMap<String, Integer>(index);
+
+        int i = 0;
+        for (String a : attrs)
+            res[i++] = idx.remove(a);
+
+        for (int pos : idx.values())
+            res[i++] = pos;
 
         return res;
     }

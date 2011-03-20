@@ -18,11 +18,12 @@ package org.bandilab;
 import java.util.*;
 
 public final class Tuple {
-    // final Head head;
-    final Comparable[] attrs;
+    final Head head;
+    final Comparable[] vals;
 
-    Tuple(Comparable[] attrs) {
-        this.attrs = attrs;
+    Tuple(Head head, Comparable[] vals) {
+        this.head = head;
+        this.vals = vals;
     }
 
     /*
@@ -31,6 +32,6 @@ public final class Tuple {
     */
 
     public String toString() {
-        return Arrays.asList(attrs).toString();
+        return Arrays.asList(vals).toString();
     }
 }

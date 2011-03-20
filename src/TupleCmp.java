@@ -28,7 +28,7 @@ final class TupleCmp implements Comparator<Tuple> {
         int result = 0;
 
         for (int pos : index) {
-            result = l.attrs[pos].compareTo(r.attrs[pos]);
+            result = l.vals[pos].compareTo(r.vals[pos]);
             if (result != 0)
                 break;
         }

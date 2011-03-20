@@ -46,9 +46,9 @@ public final class Relation {
         this.body = body;
     }
 
-    public void add(Comparable ... tuple) {
+    public void add(Comparable ... vals) {
         // TODO: check the attribute types match the attribute values
-        body.add(new Tuple(tuple));
+        body.add(new Tuple(head, vals));
     }
 
     public int size() {
@@ -60,17 +60,35 @@ public final class Relation {
     }
 
     /**
+     * Project a relation to the specified attributes. E.g. project the books
+     * relation to titles (see below) produces a unique set of book titles.
+     *
      * <code>
-     * project(books, "titles");
+     * Relation allTitles = project(books, "titles");
      * </code>
      */
     public static Relation project(Relation r, String ... attrs) {
-        return null;
+        Head h = r.head.project(attrs);
+        TupleCmp cmp = new TupleCmp(h.getIndex());
+        TreeSet<Tuple> body = new TreeSet<Tuple>(cmp);
+        int[] index = r.head.getIndex(attrs);
+
+        for (Tuple t : r.body) {
+            Comparable[] vals = new Comparable[attrs.length];
+
+            int i = 0;
+            for (int pos : index)
+                vals[i++] = t.vals[pos];
+
+            body.add(new Tuple(h, vals));
+        }
+
+        return new Relation(h, body);
     }
 
     /**
      * <code>
-     * join(books, selectedAuthors);
+     * Relation myBooks = join(books, selectedTitles);
      * </code>
      */
     public static Relation join(Relation left, Relation right) {
@@ -105,7 +123,7 @@ public final class Relation {
      * </code>
      */
     public static Relation sort(Relation r, String ... attrs) {
-        TupleCmp cmp = new TupleCmp(r.head.getIndex(attrs));
+        TupleCmp cmp = new TupleCmp(r.head.getSortIndex(attrs));
         TreeSet<Tuple> sorted = new TreeSet<Tuple>(cmp);
         sorted.addAll(r.body);
 

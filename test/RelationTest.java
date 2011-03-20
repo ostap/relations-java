@@ -20,20 +20,39 @@ import static org.bandilab.Relation.*;
 public final class RelationTest {
     public static void main(String[] args) throws Exception {
         testSort();
+        testProject();
     }
 
     static void testSort() {
+        Relation r = xyz();
+
+        checkEq("[[1, z], [11, y], [111, x], [1111, x]]", r);
+        checkEq("[[111, x], [1111, x], [11, y], [1, z]]", sort(r, "name"));
+    }
+
+    static void testProject() {
+        Relation r = xyz();
+
+        checkEq("[[1, z], [11, y], [111, x], [1111, x]]", r);
+        checkEq("[[x], [y], [z]]", project(r, "name"));
+        checkEq("[[1], [11], [111], [1111]]", project(r, "id"));
+    }
+
+    static void checkEq(String expected, Relation r) {
+        if (!expected.equals(r.toString()))
+            throw new AssertionError();
+    }
+
+    static Relation xyz() {
         Relation r = new Relation(
                 new Attribute("id", Integer.class),
                 new Attribute("name", String.class));
 
-        r.add(111, "x");
-        r.add(11,  "y");
-        r.add(1,   "z");
+        r.add(1111, "x");
+        r.add(111,  "x");
+        r.add(11,   "y");
+        r.add(1,    "z");
 
-        if (!"[[1, z], [11, y], [111, x]]".equals(r.toString()))
-            throw new AssertionError();
-        if (!"[[111, x], [11, y], [1, z]]".equals(sort(r, "name").toString()))
-            throw new AssertionError();
+        return r;
     }
 }
