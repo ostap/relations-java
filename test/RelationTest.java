@@ -15,8 +15,6 @@ limitations under the License.
 */
 package org.bandilab;
 
-import static org.bandilab.Relation.*;
-
 public final class RelationTest {
     public static void main(String[] args) throws Exception {
         Relation r = xyz();
@@ -31,32 +29,32 @@ public final class RelationTest {
     static void testSort() {
         Relation r = xyz();
 
-        checkEq("[[1, z], [11, y], [111, x], [1111, x]]", sort(r, "id"));
-        checkEq("[[111, x], [1111, x], [11, y], [1, z]]", sort(r, "name"));
+        checkEq("[[1, z], [11, y], [111, x], [1111, x]]", r.sort("id"));
+        checkEq("[[111, x], [1111, x], [11, y], [1, z]]", r.sort("name"));
     }
 
     static void testProject() {
         Relation r = xyz();
 
-        checkEq("[[x], [y], [z]]", project(r, "name"));
-        checkEq("[[1], [11], [111], [1111]]", project(r, "id"));
+        checkEq("[[x], [y], [z]]", r.project("name"));
+        checkEq("[[1], [11], [111], [1111]]", r.project("id"));
         checkEq("[[1, z], [11, y], [111, x], [1111, x]]",
-                project(r, "id", "name"));
+                r.project("id", "name"));
         checkEq("[[x, 111], [x, 1111], [y, 11], [z, 1]]",
-                project(r, "name", "id"));
+                r.project("name", "id"));
     }
 
     static void testSelect() {
         Relation r = xyz();
 
         checkEq("[[111, x], [1111, x]]",
-                select(r, new Criteria() {
+                r.select(new Criteria() {
                     public boolean take(Tuple t) {
                         return t.getInt("id") > 11;
                     }
                 }));
         checkEq("[[1, z], [11, y]]",
-                select(r, new Criteria() {
+                r.select(new Criteria() {
                     public boolean take(Tuple t) {
                         return !t.getString("name").equals("x");
                     }
@@ -64,7 +62,7 @@ public final class RelationTest {
 
         boolean failed = false;
         try {
-            select(r, new Criteria() {
+            r.select(new Criteria() {
                 public boolean take(Tuple t) {
                     return t.getInt("doesNotExist") > 0;
                 }});
@@ -80,13 +78,13 @@ public final class RelationTest {
         Relation r = xyz();
 
         checkEq("[[1, z, 2], [11, y, 22], [111, x, 222], [1111, x, 2222]]",
-                extend(r, new Extension("twiceId", Integer.class) {
+                r.extend(new Extension("twiceId", Integer.class) {
                     public Comparable extend(Tuple t) {
                         return 2 * t.getInt("id");
                     }
                 }));
         checkEq("[[1, z, z1], [11, y, y11], [111, x, x111], [1111, x, x1111]]",
-                extend(r, new Extension("nameAndId", String.class) {
+                r.extend(new Extension("nameAndId", String.class) {
                     public Comparable extend(Tuple t) {
                         return t.getString("name") + t.getInt("id");
                     }

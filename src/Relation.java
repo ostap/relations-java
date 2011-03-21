@@ -68,16 +68,16 @@ public final class Relation {
      *
      * <code>
      * Relation roboBooks =
-     *     select(books, new Criteria() {
+     *     books.select(new Criteria() {
      *         public boolean take(Tuple t) {
      *             return t.getString("title").contains("robot");
      *         }});
      * </code>
      */
-    public static Relation select(Relation r, Criteria c) {
-        Relation res = new Relation(r.head);
+    public Relation select(Criteria c) {
+        Relation res = new Relation(this.head);
 
-        for (Tuple t : r.body)
+        for (Tuple t : this.body)
             if (c.take(t))
                 res.body.add(t);
 
@@ -92,17 +92,17 @@ public final class Relation {
      *
      * <code>
      * Relation salePrices =
-     *     extend(books, new Extension("newPrice", Double.class) {
+     *     books.extend(new Extension("newPrice", Double.class) {
      *         public Comparable extend(Tuple t) {
      *             return 0.90 * t.getDouble("price");
      *         }
      *     });
      * </code>
      */
-    public static Relation extend(Relation r, Extension ... ext) {
-        Relation res = new Relation(r.head.extend(ext));
+    public Relation extend(Extension ... ext) {
+        Relation res = new Relation(this.head.extend(ext));
 
-        for (Tuple t : r.body) {
+        for (Tuple t : this.body) {
             Comparable[] vals = new Comparable[res.head.size()];
 
             int i = 0;
@@ -123,14 +123,14 @@ public final class Relation {
      * relation to titles (see below) produces a unique set of book titles:
      *
      * <code>
-     * Relation allTitles = project(books, "titles");
+     * Relation allTitles = books.project("titles");
      * </code>
      */
-    public static Relation project(Relation r, String ... attrs) {
-        Relation res = new Relation(r.head.project(attrs));
+    public Relation project(String ... attrs) {
+        Relation res = new Relation(this.head.project(attrs));
 
-        int[] index = r.head.getIndex(attrs);
-        for (Tuple t : r.body) {
+        int[] index = this.head.getIndex(attrs);
+        for (Tuple t : this.body) {
             Comparable[] vals = new Comparable[attrs.length];
 
             int i = 0;
@@ -145,19 +145,19 @@ public final class Relation {
 
     /**
      * <code>
-     * Relation myBooks = join(books, selectedTitles);
+     * Relation myBooks = books.join(selectedTitles);
      * </code>
      */
-    public static Relation join(Relation left, Relation right) {
+    public Relation join(Relation otherRelation) {
         return null;
     }
 
     /**
      * <code>
-     * summary(books, cnt("count"));
+     * books.summary(cnt("count"));
      * </code>
      */
-    public static Relation summary(Relation r, Aggregate ... aggrs) {
+    public Relation summary(Aggregate ... aggrs) {
         return null;
     }
 
@@ -166,14 +166,14 @@ public final class Relation {
      * by price:
      *
      * <code>
-     * sort(books, "price");
+     * books.sort("price");
      * </code>
      */
-    public static Relation sort(Relation r, String ... attrs) {
-        TupleCmp cmp = new TupleCmp(r.head.getSortIndex(attrs));
+    public Relation sort(String ... attrs) {
+        TupleCmp cmp = new TupleCmp(this.head.getSortIndex(attrs));
         TreeSet<Tuple> sorted = new TreeSet<Tuple>(cmp);
-        sorted.addAll(r.body);
+        sorted.addAll(this.body);
 
-        return new Relation(r.head, sorted);
+        return new Relation(this.head, sorted);
     }
 }
